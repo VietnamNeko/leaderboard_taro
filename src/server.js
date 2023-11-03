@@ -47,11 +47,9 @@ client.on('message', async function(message) {
             }
         }
         
-        
-
         var embed = new Discord.MessageEmbed()
 	        .setColor('#0099ff')
-	        .setTitle('Toadz Leaderboard')
+	        .setTitle('Game Leaderboard')
             .setDescription(scores)
 	        .setThumbnail('https://cdn.discordapp.com/attachments/576848866108899351/899102080101404692/toadz_cover.png')
 	        .setTimestamp();
@@ -65,15 +63,15 @@ app.get('scoreboard', async function(req,res,next){
 })
 
 app.post('/score', async function(req,res,next) {
-    if (req.body.code != 'code') { //small security measure so not anybody can send a request to the server
+    if (req.body.code != 'code') { //we don't know modd server IP, so we use this small security measure so not anybody can send a request to the server
         res.send('{"response":"false"}');
     }
 
-    if (!req.body.username || !req.body.score || !req.body.playerID) {
+    if (!req.body.username || !req.body.score) {
         res.send('{"response":"false"}');
     }
 
-    var user = await User.findOne({playerID:Number(req.body.playerID)});
+    var user = await User.findOne({playerID:Number(req.body.username)});
     if (user) {
         if (user.score < Number(req.body.score)) {
             user.score = Number(req.body.score);
@@ -83,7 +81,6 @@ app.post('/score', async function(req,res,next) {
         const newUser = new User();
         newUser.username = req.body.username;
         newUser.score = Number(req.body.score);
-        newUser.playerID = Number(req.body.playerID);
         await newUser.save();
     }
     res.send('{"response":"saved"}');
