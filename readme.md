@@ -1,4 +1,5 @@
 ## how to setup
+A simple app to receive modd highscores and save them in a leaderboard. Also works as a Discord bot which can display the leaderboard.
 
 create .env file if you don't have it, and add:
 ```
